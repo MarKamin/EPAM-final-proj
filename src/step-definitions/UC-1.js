@@ -18,12 +18,15 @@ When(/^I enter any username "([^"]*)" and password "([^"]*)", then clear the fie
     await LoginPage.enterUsrPsw(username, password);
 
     // Clear the User field
-    await LoginPage.inputUsername.clearValue('');
+    await LoginPage.inputUsername.click(); 
+    await browser.keys(['Control', 'a']); 
+    await browser.keys('Backspace'); 
 
     // Clear the password field
-    await LoginPage.inputPassword.clearValue('');
+    await LoginPage.inputPassword.click();
+    await browser.keys(['Control', 'a']); 
+    await browser.keys('Backspace'); 
     
-
     //Clicking Login button
     await LoginPage.btnSubmit.click();
 });
