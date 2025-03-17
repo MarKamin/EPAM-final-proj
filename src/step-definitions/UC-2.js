@@ -17,11 +17,9 @@ When(/^I enter some username "([^"]*)" and password "([^"]*)", clear password fi
     await LoginPage.enterUsrPsw(username, password);
 
     // Clear the password field
-    await LoginPage.inputPassword.click(); 
-    await browser.execute(() => {
-        document.querySelector('#password').select(); 
-    });
-    await browser.keys(['Backspace']);
+    await LoginPage.inputPassword.click();
+    await browser.keys(['Control', 'a']); 
+    await browser.keys('Backspace'); 
 
     // Click Login
     await LoginPage.btnSubmit.click();
