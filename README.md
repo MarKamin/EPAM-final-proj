@@ -43,11 +43,39 @@ Assertions: Use from the selected framework;
 
 ## How to Run Tests
 
-1. Install dependencies:
+1. Clone the repo:
+    ```bash
+    git clone https://github.com/MarKamin/EPAM-final-proj.git  
+2. Change directory
+    ```bash
+    cd EPAM-final-proj 
+3. Install dependencies:
    ```bash
    npm install
    
-2. Run test using @ tags (there are three tags @UC_1, @UC_2, @UC_3):  
+4. Run all tests:
+    ```bash
+    npm run wdio
+   
+5. Run tests separetly using tags if some your low on memory or experience difficulty when running all tests at once 
+
 Example:  
-   ```bash
+```bash
    npm run wdio -- --cucumberOpts.tagExpression="@UC_1"
+   ```
+```bash
+   npm run wdio -- --cucumberOpts.tagExpression="@UC_2"
+```
+```bash
+   npm run wdio -- --cucumberOpts.tagExpression="@UC_3"
+```
+
+## Other Info:
+
+The following code was used for clearing fields, the reason is that after clearValue(), the values were being cleared, but at the last second when Login button was clicked somehow the values were filled in again, but clearing with 'backspace' key solved it:
+```javascript
+// Clear the password field  
+    await LoginPage.inputPassword.click();  
+    await browser.keys(['Control', 'a']);  
+    await browser.keys('Backspace');  
+```
