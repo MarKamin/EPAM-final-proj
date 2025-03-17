@@ -1,29 +1,38 @@
-import { When } from '@wdio/cucumber-framework';
+import { Given, When, Then } from '@wdio/cucumber-framework';
 
 import LoginPage from '../po/pages/login.page.js';
+import errorMessageBox from '../po/components/loginError.component.js';
 
-// Step 1: login.steps.js
+const pages = {
+    login: LoginPage
+};
 
-// Step 2: Enter any username and password
-// When(/^I enter some username and password$/, async () => {
-//     await LoginPage.inputUsername.setValue('some_username2');
-//     await LoginPage.inputPassword.setValue('some_password2');
-// });
-// Step 2: Enter any username and password
-When(/^I enter some username "([^"]*)" and password "([^"]*)"$/, async (username, password) => {
-    await LoginPage.enterUsrPsw(username, password);
-    console.log(`Entered username: ${username}, password: ${password}`);
+// Step 1: Land on Login page
+Given(/^I am at the login page$/, async () => {
+    await pages.login.open();
 });
 
-// Step 3: Clear the username and password fields
-When(/^I clear the password field$/, async () => {
+// Step 2: Enter any username and password
+When(/^I enter some username "([^"]*)" and password "([^"]*)", clear password field and click Login$/, async (username, password) => {
+    await LoginPage.enterUsrPsw(username, password);
+
     // Clear the password field
     await LoginPage.inputPassword.click(); 
     await browser.execute(() => {
         document.querySelector('#password').select(); 
     });
     await browser.keys(['Backspace']);
-    console.log('Cleared the password field'); 
+
+    // Click Login
+    await LoginPage.btnSubmit.click();
+});
+
+// Step 3: Displaying error message
+Then(/^I should see the box with error message saying (.+)$/, async (errorMessage) => {
+    await errorMessageBox.errorName.waitForDisplayed();
+    const errorElement = await errorMessageBox.errorName.getText();
+
+    await expect(errorElement).toContain(errorMessage);
 });
 
 

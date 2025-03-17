@@ -1,4 +1,4 @@
-import { When, Then } from '@wdio/cucumber-framework';
+import { When, Then, Given } from '@wdio/cucumber-framework';
 import { expect } from '@wdio/globals';
 
 import LoginPage from '../po/pages/login.page.js';
@@ -9,23 +9,24 @@ const pages = {
     dashboard: DashboardPage
 };
 
-// Step 1: logins.steps.js
-
-// Step 2: Enter a valid username and a valid password
-When(/^I enter a valid username "([^"]*)" and a valid password "([^"]*)"$/, async (username, password) => {
-    await LoginPage.enterUsrPsw(username, password);
-    console.log(`Entered username: ${username}, password: ${password}`);
+// Step 1: Enter Login page
+Given(/^I connected to the login page$/, async () => {
+    await pages.login.open();
 });
 
-// Steps 3: login.steps.js (Clicking on login button)
+// Step 2: Enter a valid username and a valid password
+When(/^I enter a valid username "([^"]*)" and a valid password "([^"]*)" and click Login button$/, 
+    async (username, password) => {
+    await LoginPage.enterUsrPsw(username, password);
+    console.log(`Entered username: ${username}, password: ${password}`);
 
-// Step 4: Verify the title on the dashboard
+    await LoginPage.btnSubmit.click();
+});
+
+// Step 3: Verify the title on the dashboard
 Then(/^I should see the title "([^"]+)" on the dashboard page$/, async (title) => {
     await pages.dashboard.titleName.waitForDisplayed();
-
     const dashboardPageTitle = await pages.dashboard.titleName.getText();
-    console.log('Actual dashboard title:', dashboardPageTitle); 
 
     await expect(dashboardPageTitle).toEqual(title);
-    console.log('**TEST ENDED**')
 });

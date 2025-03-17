@@ -56,6 +56,9 @@ export const config = {
                 args: [
                     // '--headless', // Run in headless mode
                     '--disable-autofill', // Disable autofill
+                    '--disable-form-fill',
+                    '--autofill-features=disabled',
+                    '--user-data-dir=/tmp/chrome-profile', // Use a temporary profile
                 ],
             },
         },
